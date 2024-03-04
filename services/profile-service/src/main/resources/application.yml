@@ -1,0 +1,22 @@
+server:
+  port: 8081
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:profiledb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: sa
+  liquibase:
+    change-log: classpath:db/changelog/migration_ddl.sql
+    url: jdbc:h2:mem:profiledb
+    user: sa
+    password: sa
+  h2:
+    console:
+      enabled: true
+  jpa:
+    show-sql: true
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: none
