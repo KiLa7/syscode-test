@@ -1,0 +1,95 @@
+openapi: 3.0.3
+info:
+  title: Swagger Profile Service - OpenAPI 3.0
+  description: Address service api
+  contact:
+    email: laczko.krisztian@yahoo.com
+  version: 1.0.11
+servers:
+  - url: 'https://localhost:8082/api'
+tags:
+  - name: address
+    description: Address related objects
+paths:
+  '/address/{id}':
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Get address by id
+      tags:
+        - address
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressDto'
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      operationId: getAddressById
+      description: Get address by id.
+  /address:
+    post:
+      summary: Create new address
+      operationId: postAddress
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressDto'
+        '500':
+          description: Internal Server Error
+      description: Create new address.
+      tags:
+        - address
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddressDto'
+    put:
+      summary: Update address
+      operationId: putAddress
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressDto'
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      description: Update address.
+      tags:
+        - address
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddressDto'
+components:
+  schemas:
+    AddressDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        address:
+          type: string
+          minLength: 3
+      required:
+        - id
+        - address
