@@ -104,6 +104,9 @@ components:
         email:
           type: string
           format: email
+        address:
+          type: string
+          minLength: 3
       required:
         - name
         - email

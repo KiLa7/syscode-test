@@ -1,5 +1,6 @@
 package hu.syscode.profileservice.service;
 
+import hu.syscode.openapi.client.api.AddressApiClient;
 import hu.syscode.openapi.model.StudentDto;
 import hu.syscode.profileservice.entity.Student;
 import hu.syscode.profileservice.repository.StudentRepository;
@@ -30,6 +31,8 @@ public class StudentServiceTest {
     private StudentRepository studentRepository;
     @Mock
     private ConversionService conversionService;
+    @Mock
+    private AddressApiClient addressApiClient;
 
     private StudentService studentService;
 
@@ -39,7 +42,7 @@ public class StudentServiceTest {
 
     @BeforeEach
     public void init() {
-        studentService = new StudentServiceImpl(studentRepository, conversionService);
+        studentService = new StudentServiceImpl(studentRepository, conversionService, addressApiClient);
     }
 
     @Nested
@@ -49,7 +52,7 @@ public class StudentServiceTest {
         @Test
         @DisplayName("successfully")
         public void successfully() {
-            studentService.createStudent(STD_NAME, STD_MAIL);
+            studentService.createStudent(STD_NAME, STD_MAIL, null);
             verify(studentRepository, times(1)).save(studentArgumentCaptor.capture());
             Student createdStudent = studentArgumentCaptor.getValue();
             assertStudent(STD_NAME, STD_MAIL, createdStudent);
@@ -112,7 +115,7 @@ public class StudentServiceTest {
         public void successfully() {
             Student student = createTestStudent(STD_ID, STD_NAME, STD_MAIL);
             when(studentRepository.findById(STD_ID)).thenReturn(Optional.of(student));
-            studentService.updateStudent(STD_ID, "mod_".concat(STD_NAME), "mod_".concat(STD_MAIL));
+            studentService.updateStudent(STD_ID, "mod_".concat(STD_NAME), "mod_".concat(STD_MAIL), null);
             verify(studentRepository, times(1)).save(studentArgumentCaptor.capture());
             Student updatedStudent = studentArgumentCaptor.getValue();
             assertEquals(STD_ID, updatedStudent.getId());
@@ -122,7 +125,7 @@ public class StudentServiceTest {
         @Test
         @DisplayName("not found")
         public void notFound() {
-            assertThrows(EntityNotFoundException.class, () -> studentService.updateStudent(STD_ID, STD_NAME, STD_MAIL));
+            assertThrows(EntityNotFoundException.class, () -> studentService.updateStudent(STD_ID, STD_NAME, STD_MAIL, null));
         }
     }
 

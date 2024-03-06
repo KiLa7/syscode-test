@@ -20,11 +20,11 @@ public class StudentController implements StudentApi {
     @Override
     public ResponseEntity<StudentDto> postStudent(StudentDto studentDto) {
         return new ResponseEntity<>(studentService.createStudent(studentDto.getName(),
-                studentDto.getEmail()), HttpStatus.CREATED);
+                studentDto.getEmail(), studentDto.getAddress()), HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<String> deleteStudentById(UUID studentId) {
+    public ResponseEntity deleteStudentById(UUID studentId) {
         studentService.deleteStudent(studentId);
         return ResponseEntity.ok("Student deleted successfully");
     }
@@ -37,6 +37,6 @@ public class StudentController implements StudentApi {
     @Override
     public ResponseEntity<StudentDto> putStudent(StudentDto studentDto) {
         return new ResponseEntity<>(studentService.updateStudent(studentDto.getId(),
-                studentDto.getName(), studentDto.getEmail()), HttpStatus.OK);
+                studentDto.getName(), studentDto.getEmail(), studentDto.getAddress()), HttpStatus.OK);
     }
 }

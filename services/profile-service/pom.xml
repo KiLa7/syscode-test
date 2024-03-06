@@ -28,6 +28,12 @@
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <version>4.1.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -63,6 +69,23 @@
                             <configOptions>
                                 <sourceFolder>src/gen/java/main</sourceFolder>
                                 <interfaceOnly>true</interfaceOnly>
+                                <useSpringBoot3>true</useSpringBoot3>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>address-api-client</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/../address-service/src/main/resources/apis/address-api.yml</inputSpec>
+                            <generatorName>spring</generatorName>
+                            <apiPackage>hu.syscode.openapi.client.api</apiPackage>
+                            <modelPackage>hu.syscode.openapi.client.model</modelPackage>
+                            <library>spring-cloud</library>
+                            <configOptions>
+                                <sourceFolder>src/gen/java/main</sourceFolder>
                                 <useSpringBoot3>true</useSpringBoot3>
                             </configOptions>
                         </configuration>
