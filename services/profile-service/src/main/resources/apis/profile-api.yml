@@ -1,13 +1,12 @@
 openapi: 3.0.3
 info:
   title: Swagger Profile Service - OpenAPI 3.0
-  description: |-
-    Profile service api
+  description: Profile service api
   contact:
     email: laczko.krisztian@yahoo.com
   version: 1.0.11
 servers:
-  - url: https://localhost:8081/api
+  - url: 'https://localhost:8081/api'
 tags:
   - name: student
     description: Student related objects
@@ -26,10 +25,74 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Student'
+                  $ref: '#/components/schemas/StudentDto'
+      description: List all registered students.
+    post:
+      summary: Create new student
+      operationId: postStudent
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentDto'
+        '500':
+          description: Internal Server Error
+      description: Create new student.
+      tags:
+        - student
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentDto'
+    put:
+      summary: Update student
+      operationId: putStudent
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentDto'
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      description: Update existing student.
+      tags:
+        - student
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentDto'
+  '/student/{studentId}':
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+        name: studentId
+        in: path
+        required: true
+    delete:
+      summary: Delete student by id
+      operationId: deleteStudentById
+      description: Delete student by id.
+      tags:
+        - student
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
 components:
   schemas:
-    Student:
+    StudentDto:
       type: object
       properties:
         id:
@@ -37,6 +100,10 @@ components:
           format: uuid
         name:
           type: string
+          minLength: 3
         email:
           type: string
           format: email
+      required:
+        - name
+        - email
